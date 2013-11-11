@@ -1,0 +1,29 @@
+1.jar:
+    newGame() can instantiates boards with empty square if cubes ends with a new line.
+    
+    Dictionary only added words at least 4 characters long (which is fine), but wasn't
+    in the assumptions
+    
+    Dictionary returns null iterator when empty dictionary is loaded
+
+2.jar:
+    getAllWords() following setGame() returns empty collection of strings
+     
+3.jar:
+    
+    getAllWords() following newGame() returns empty collection of strings
+    getAllWords() should not include words less than 4 characters
+    newGame() should print an error message if it failed to create a new board
+    
+    When Dictionary is loaded with an empy dictionary, iterator.hasNext() returns true instead of
+    false
+
+    iterator.next() should return a NoSuchElementException when there is no next rather than a
+    NullPointerException
+
+4.jar:
+    newGame() should print something more descriptive than just NoSuchElementException
+    when there are not enough cubes
+    
+    
+

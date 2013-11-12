@@ -190,10 +190,11 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         for(int i = 0; i < indents * 4; i++)
             sb.append(' ');
         if(node == null){
-            return "";
+            return sb.toString() + "null\n";
         }
-        return toString(node.rightChild, indents + 1 ) + sb.toString() + 
-            node.toString() + toString(node.leftChild, indents + 1);
+        return sb.toString() + node.toString() + 
+            toString(node.rightChild, indents + 1 )  + 
+            toString(node.leftChild, indents + 1);
     }
      
     /**
@@ -219,13 +220,15 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             implements Iterator<K>{
         TreapNode thisNode = root;
         ArrayList<TreapNode> stack = new ArrayList<>();
-        boolean goLeft = true;
+        int prevChild = 0; 
         public TreapIterator(){
             //stack.add(null);
         }
         public boolean hasNext(){
-            return thisNode != null;
+            //return thisNode != null;
+            return !thisNode.key.equals(largest) || prevChild != 2;
         }
+        /*
         public K next() throws NoSuchElementException{
             if(thisNode == null)
                 throw new NoSuchElementException();
@@ -256,6 +259,44 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                         }while(compare < 0);
                         goLeft = false;
                         return temp.key;
+                    }
+                }
+            }
+        }
+        */
+        public K next() throws NoSuchElementException{
+            // 0 - not visited before, 1 - came from left, 2 - came from right
+            TreapNode temp;
+            while(true){
+                // left isn't null and this is our first time on this branch
+                if(thisNode.leftChild != null && prevChild == 0){
+                    stack.add(thisNode);
+                    thisNode = thisNode.leftChild;
+                }else{
+                    // first time on branch (left was null)
+                    if(prevChild == 0){
+                        prevChild = 1;
+                    }else if(prevChild == 1){ // came back from left (must return)
+                        temp = thisNode;
+                        if(thisNode.rightChild == null)
+                            prevChild = 2;
+                        else{
+                            stack.add(thisNode);
+                            thisNode = thisNode.rightChild;
+                            prevChild = 0;
+                        }
+                        return temp.key;
+                    }else{ // came back from right
+                        temp = thisNode;
+                        if(stack.size() <= 0)
+                            throw new NoSuchElementException(); 
+                        thisNode = stack.remove(stack.size() - 1);
+                        int compare = thisNode.key.compareTo(temp.key);
+                        if(compare > 0){
+                            prevChild = 1;
+                        }else{
+                            prevChild = 2;
+                        }
                     }
                 }
             }

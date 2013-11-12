@@ -1,8 +1,8 @@
 package assignment;
 import java.util.Random;
+import java.util.Iterator;
 
-
-public class TreapMap<K extends Comparable<K>, V> implements Treap {
+public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     private TreapNode<K,V> root;
     private Random r = new Random();
 
@@ -17,7 +17,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      *        	    null if the key is null or the key is not in 
      *              this treap
      */
-    V lookup(K key){
+    public V lookup(K key){
         TreapNode<K,V> current = root;
         while(current!=null){
             int compare = current.key.compareTo(key);
@@ -39,35 +39,32 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * @param key  	the key to add to this dictionary
      * @param value	 the value to associate with the key
      **/
-    void insert(K key, V value){
+    public void insert(K key, V value){
         if(root == null)
-            root = new TreapNode(key,value);
+            root = new TreapNode<>(key,value);
         insert(key,value,null,root);
     }
 
-    private TreapNode<K,V> insert(K key, V value, TreapNode<K,V> parent, TreapNode<K,V> current) {
+    private TreapNode<K,V> insert(K key, V value, TreapNode<K,V> parent, 
+            TreapNode<K,V> current) {
         int compare = current.key.compareTo(key);
         if(compare == 0){
             current.value = value;
         }
-
         else if(compare > 0){
             if(current.leftChild==null)
-                current.leftChild = new TreapNode(key,value);
+                current.leftChild = new TreapNode<>(key,value);
             current = insert(key,value,current,current.leftChild);
         }
-
         else {
             if(current.rightChild == null)
-                current.rightChild = new TreapNode(key,value);
+                current.rightChild = new TreapNode<>(key,value);
             current = insert(key,value,current,current.rightChild);
         }
-
         if(parent == null) {
             root = current;
             return null;
         }
-
         compare = parent.key.compareTo(current.key);
         TreapNode<K,V> innerChild;
         // if current node is left child of parent
@@ -75,12 +72,10 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
             parent.leftChild = current;
             innerChild = current.rightChild;
         }
-
         else {
             parent.rightChild = current;
             innerChild = current.leftChild;
         }
-
         if((parent.priority - current.priority)>0){
             if(compare > 0){
                 parent.leftChild = innerChild;
@@ -104,8 +99,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * @param key      the key to remove
      * @return         the associated with the removed key, or null 
      */
-    V remove(K key){
-
+    public V remove(K key){
+        return null;
     }
 
     /**
@@ -116,7 +111,9 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * @param key    the key to split the treap with
      * @return       the left treap in index 0, the right in index 1
      */
-    Treap<K, V> [] split(K key);
+    public Treap<K, V> [] split(K key){
+        return null;
+    }
 
     /**
      * Joins this treap with another treap.  If the other treap is not
@@ -126,7 +123,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      *
      * @param t    the treap to join with
      */
-    void join(Treap<K, V> t);
+    public void join(Treap<K, V> t){
+    }
 
     /**
      * Melds this treap with another treap.  If the other treap is not
@@ -136,8 +134,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      *
      * @param t    the treap to meld with.  t may be modified.
      */
-    void meld(Treap<K, V> t) throws UnsupportedOperationException{
-    throw new Unsupported
+    public void meld(Treap<K, V> t) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -150,7 +148,9 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * @param t   a treap containing elements to remove from this
      *            treap.  t may be destructively modified.
      */
-    void difference(Treap<K, V> t) throws UnsupportedOperationException;
+    public void difference(Treap<K, V> t) throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
 
 
     /**
@@ -163,14 +163,18 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * printing.  This method prints out the string representations
      * of key and value using the object's toString().
      */
-    String toString();
+    public String toString(){
+        return null;
+    }
 
 
     /**
      * @return a fresh iterator that points to the first element in 
      * this Treap and iterates in sorted order. 
      */
-    Iterator<K> iterator();
+    public Iterator<K> iterator(){
+        return null;
+    }
 
     /**
      * Returns the balance factor of the treap.  The balance factor
@@ -179,7 +183,10 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap {
      * has a balance factor of 1.0.  If this treap does not support
      * balance statistics, throw an exception.
      */
-    double balanceFactor() throws UnsupportedOperationException;
+    public double balanceFactor() throws UnsupportedOperationException{
+        throw new UnsupportedOperationException();
+    }
+    
 
     private class TreapNode<K extends Comparable<K>, V> {
         private TreapNode<K,V> leftChild;

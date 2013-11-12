@@ -77,8 +77,8 @@ public interface Treap<K extends Comparable<K>, V> extends Iterable<K> {
      * @param t   a treap containing elements to remove from this
      *            treap.  t may be destructively modified.
      */
-    void difference(Treap<K, V> t) throws UnsupportedOperationException;
 
+    void difference(Treap<K, V> t) throws UnsupportedOperationException;
 
     /**
      * Build a human-readable version of the treap. 

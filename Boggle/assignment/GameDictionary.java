@@ -123,25 +123,18 @@ public class GameDictionary implements BoggleDictionary{
             char prevChild = 0;
             while(true){
                 char i = prevChild;
-                // find the next child that is not a null node
                 while(i < 26 && thisNode.nextLetters[i] == null)
                     i++;
-                // we've reached a dead end, must back up the tree
                 if(i >= 26){
                     if(stack.size() <= 0)
                         throw new NoSuchElementException();
-                    // save current child index
                     prevChild = (char)(thisNode.letter - 'a' + 1);
-                    // pop from the stack
                     thisNode = stack.remove(stack.size() - 1);
-                    // update current word
                     word.deleteCharAt(word.length() - 1);
                 }else{ // move down the tree
                     stack.add(thisNode);
                     thisNode = thisNode.nextLetters[i];
-                    // update word
                     word.append(thisNode.letter);
-                    // reset previous child
                     prevChild = 0;
                     if(thisNode.isWord){
                         return word.toString();

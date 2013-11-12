@@ -90,6 +90,33 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         else
             return parent;
     }
+
+    /**
+      * Rotates the proper direction around parent. Decides if current is left or right child
+      * and performs the appropriate rotation. Returns the new top of the subtree.
+      * 
+      * @param parent   the node you want to rotate around
+      * @param current  the child you want to rotate to the top
+      * @return         the new top of the subtree
+      **/
+
+    TreapNode<K,V> rotate(TreapNode<K,V> parent, TreapNode<K,V> current){
+        int compare = parent.key.compareTo(current.key);
+        TreapNode<K,V> innerChild;
+        if(compare > 0) {
+            innerChild = current.rightChild;
+            parent.leftChild = innerChild;
+            current.rightChild = parent;
+            return current;
+        }
+        else {
+            innerChild = current.leftChild
+            parent.rightChild = innerChild;
+            current.leftChild = parent;
+            return current;
+        }
+    }
+
     /**
      * Removes a key from this dictionary.  If the key is not present
      * in this dictionary, this method does nothing.  Returns the

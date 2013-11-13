@@ -191,7 +191,6 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                 parent.rightChild = rotate(current,lesserChild);
                 parent = parent.rightChild;
             }
-
             //System.out.println("Parent : " + parent.toString());
             //System.out.println("Current : " + current.toString() +"\n");
             for(int i=0; i<1000000000; i++)

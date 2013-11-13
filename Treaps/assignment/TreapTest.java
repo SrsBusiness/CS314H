@@ -4,19 +4,19 @@ import java.util.Random;
 
 public class TreapTest{
     public static void main(String[] args){ 
-        TreapMap<Integer, Integer> treap = randomTreap(0,50);
-        TreapMap<Integer, Integer> treap2 = randomTreap(51,101);
+        TreapMap<Integer, Integer> treap = randomTreap(0, 50);
+        TreapMap<Integer, Integer> treap2 = randomTreap(51, 101);
         sizeTest(treap, 50);
         sizeTest(treap2, 50);
         lookupTest(treap, 0, 50);
         orderTest(treap);
         joinTest(treap,treap2);
-        for(int i = 10; i<20; i++)
+        for(int i = 10; i < 20; i++)
             treap.remove(i);
         System.out.println("removed 10-19");
         sizeTest(treap, 40);
-        lookupTest(treap,0,10);
-        lookupTest(treap,20,50);
+        lookupTest(treap, 0, 10);
+        lookupTest(treap, 20, 50);
         orderTest(treap);
     }
 
@@ -24,7 +24,7 @@ public class TreapTest{
         TreapMap<Integer, Integer> result = new TreapMap<>();
         Random r = new Random();
         for(int i = s; i < f; i++){
-            result.insert(i,i);
+            result.insert(i, i);
         }
         System.out.println("created treap");
         return result;
@@ -45,7 +45,7 @@ public class TreapTest{
     public static void lookupTest(TreapMap map, int s, int f){
         boolean right = true;
         for(int i = s; i < f; i++)
-            right = right && (map.lookup(i)==i);
+            right = right && (map.lookup(i) == i);
         if(right)
             System.out.println("lookup and key-value pairs are correct");
         else
@@ -56,9 +56,9 @@ public class TreapTest{
         Iterator<Integer> it = map.iterator();
         int prev = it.next();
         boolean ordered = true;
-        while(it.hasNext()){
+        while(it.hasNext() && ordered){
             int next = it.next();
-            ordered = ordered && (next>prev);
+            ordered = ordered && (next > prev);
         }
         if(ordered)
             System.out.println("Iterator goes in order of keys");

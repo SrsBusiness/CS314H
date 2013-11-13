@@ -55,7 +55,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         insert(key, value, r.nextInt(1000000000), null, root);
         modCount++;
     }
-    
+
     private TreapNode insert(K key, V value, int priority, TreapNode parent, 
             TreapNode current) {
         int compare = current.key.compareTo(key);
@@ -75,7 +75,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                 current.rightChild = new TreapNode(key, value, priority);
             current = insert(key, value, priority, current, current.rightChild);
         }
-        
+
         if(parent == null) {
             root = current;
             return null;
@@ -92,13 +92,13 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     }
 
     /**
-      * Rotates the proper direction around parent. Decides if current is left or right child
-      * and performs the appropriate rotation. Returns the new top of the subtree.
-      * 
-      * @param parent   the node you want to rotate around
-      * @param current  the child you want to rotate to the top
-      * @return         the new top of the subtree
-      **/
+     * Rotates the proper direction around parent. Decides if current is left or right child
+     * and performs the appropriate rotation. Returns the new top of the subtree.
+     * 
+     * @param parent   the node you want to rotate around
+     * @param current  the child you want to rotate to the top
+     * @return         the new top of the subtree
+     **/
 
     private TreapNode rotate(TreapNode parent, TreapNode current){
         if(parent == root)
@@ -111,10 +111,27 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             current.rightChild = parent;
             return current;
         }
-        else {
+        else if(compare<0){
             innerChild = current.leftChild;
             parent.rightChild = innerChild;
             current.leftChild = parent;
+            return current;
+        }
+        else{
+           // System.out.println("sameKey");
+            if(parent.rightChild == current){
+                innerChild = current.leftChild;
+                parent.rightChild = innerChild;
+                current.leftChild = parent;
+                return current;
+            }
+            else if(parent.leftChild == current){
+                innerChild = current.rightChild;
+                parent.leftChild = innerChild;
+                current.rightChild = parent;
+                return current;
+            }else
+                System.out.println("error in rotate");
             return current;
         }
     }
@@ -135,6 +152,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         TreapNode parent = null;
         int compare;
         while((compare = current.key.compareTo(key))!=0){
+            //System.out.println("searching on node "+current.key);
             parent = current;
             if(compare < 0 && current.rightChild != null)
                 current = current.rightChild;
@@ -148,11 +166,14 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     }
 
     private V remove(TreapNode current, TreapNode parent) {
+        //System.out.println("in recursion on " + current.key);
         if(parent == null)
-            parent = new TreapNode(current.key, current.value);
+            parent = new TreapNode(current.key, current.value, 1);
         int compare = parent.key.compareTo(current.key);
         while(current.leftChild != null || current.rightChild != null) {
-            //System.out.println("rotating");
+            // System.out.println("Parent : " + parent.toString());
+            // System.out.println("Current : " + current.toString());
+            // System.out.println("rotating");
             compare = parent.key.compareTo(current.key);
             TreapNode lesserChild;
             if(current.leftChild == null)
@@ -170,8 +191,11 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                 parent.rightChild = rotate(current,lesserChild);
                 parent = parent.rightChild;
             }
+
             //System.out.println("Parent : " + parent.toString());
-            //System.out.println("Current : " + current.toString());
+            //System.out.println("Current : " + current.toString() +"\n");
+            for(int i=0; i<1000000000; i++)
+                for(int k=0;k<100000000;k++);
         }
         compare = parent.key.compareTo(current.key);
         if(current == root){
@@ -210,9 +234,15 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      */
     public void join(Treap<K, V> t){
         TreapNode temp = root;
-        root = new TreapNode(root.key,null,-1);
+        K tempKey;
+        if(root.priority < ((TreapMap<K, V>)t).root.priority)
+            tempKey = ((TreapMap<K, V>)t).root.key;
+        else
+            tempKey = root.key;
+        root = new TreapNode(tempKey,null,-1);
         root.leftChild = temp;
         root.rightChild = ((TreapMap<K, V>)t).root;
+        // System.out.println("root is " + root);
         remove(root.key);
     }
 
@@ -256,7 +286,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     public String toString(){
         return toString(root, 0); 
     }
-    
+
     private String toString(TreapNode node, int indents){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < indents * 4; i++)
@@ -268,7 +298,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             sb.toString() + node.toString() +
             toString(node.leftChild, indents + 1);
     }
-     
+
     /**
      * @return a fresh iterator that points to the first element in 
      * this Treap and iterates in sorted order. 
@@ -287,98 +317,98 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     public double balanceFactor() throws UnsupportedOperationException{
         throw new UnsupportedOperationException();
     }
-      
+
     private class TreapIterator 
             implements Iterator<K>{
-        private TreapNode thisNode = root;
-        private ArrayList<TreapNode> stack = new ArrayList<>();
-        int prevChild = 0; 
-        long expectedModCount = modCount;
-        public TreapIterator(){
-            //stack.add(null);
-        }
-        public boolean hasNext(){
-            //return thisNode != null;
-            return !thisNode.key.equals(largest) || prevChild != 2;
-        }
-        /*
-        public K next() throws NoSuchElementException{
-            if(thisNode == null)
-                throw new NoSuchElementException();
-            while(true){
-                // go left
-                if(thisNode.leftChild != null && goLeft){
-                    stack.add(thisNode);
-                    thisNode = thisNode.leftChild;
-                }else{
-                    TreapNode temp = thisNode;
-                    // go right
-                    if(thisNode.rightChild != null){
+            private TreapNode thisNode = root;
+            private ArrayList<TreapNode> stack = new ArrayList<>();
+            int prevChild = 0; 
+            long expectedModCount = modCount;
+            public TreapIterator(){
+                //stack.add(null);
+            }
+            public boolean hasNext(){
+                //return thisNode != null;
+                return !thisNode.key.equals(largest) || prevChild != 2;
+            }
+            /*
+               public K next() throws NoSuchElementException{
+               if(thisNode == null)
+               throw new NoSuchElementException();
+               while(true){
+            // go left
+            if(thisNode.leftChild != null && goLeft){
+            stack.add(thisNode);
+            thisNode = thisNode.leftChild;
+            }else{
+            TreapNode temp = thisNode;
+            // go right
+            if(thisNode.rightChild != null){
+            stack.add(thisNode);
+            thisNode = thisNode.rightChild;
+            goLeft = true;
+            return temp.key;
+            }else{
+            int compare;
+            do{
+            if(stack.size() <= 0){
+            thisNode = null;
+            break;
+            }
+            TreapNode popped = stack.remove(
+            stack.size() - 1);
+            compare = popped.key.compareTo(thisNode.key);
+            thisNode = popped;
+            }while(compare < 0);
+            goLeft = false;
+            return temp.key;
+            }
+            }
+               }
+               }
+             */
+            public K next() throws NoSuchElementException{
+                // 0 - not visited before, 1 - came from left, 2 - came from right
+                if(expectedModCount != modCount)
+                    throw new ConcurrentModificationException();
+                TreapNode temp;
+                while(true){
+                    // left isn't null and this is our first time on this branch
+                    if(thisNode.leftChild != null && prevChild == 0){
                         stack.add(thisNode);
-                        thisNode = thisNode.rightChild;
-                        goLeft = true;
-                        return temp.key;
+                        thisNode = thisNode.leftChild;
                     }else{
-                        int compare;
-                        do{
-                            if(stack.size() <= 0){
-                                thisNode = null;
-                                break;
-                            }
-                            TreapNode popped = stack.remove(
-                                    stack.size() - 1);
-                            compare = popped.key.compareTo(thisNode.key);
-                            thisNode = popped;
-                        }while(compare < 0);
-                        goLeft = false;
-                        return temp.key;
-                    }
-                }
-            }
-        }
-        */
-        public K next() throws NoSuchElementException{
-            // 0 - not visited before, 1 - came from left, 2 - came from right
-            if(expectedModCount != modCount)
-                throw new ConcurrentModificationException();
-            TreapNode temp;
-            while(true){
-                // left isn't null and this is our first time on this branch
-                if(thisNode.leftChild != null && prevChild == 0){
-                    stack.add(thisNode);
-                    thisNode = thisNode.leftChild;
-                }else{
-                    // first time on branch (left was null)
-                    if(prevChild == 0){
-                        prevChild = 1;
-                    }else if(prevChild == 1){ // came back from left (must return)
-                        temp = thisNode;
-                        if(thisNode.rightChild == null)
-                            prevChild = 2;
-                        else{
-                            stack.add(thisNode);
-                            thisNode = thisNode.rightChild;
-                            prevChild = 0;
-                        }
-                        return temp.key;
-                    }else{ // came back from right
-                        temp = thisNode;
-                        if(stack.size() <= 0)
-                            throw new NoSuchElementException(); 
-                        thisNode = stack.remove(stack.size() - 1);
-                        int compare = thisNode.key.compareTo(temp.key);
-                        if(compare > 0){
+                        // first time on branch (left was null)
+                        if(prevChild == 0){
                             prevChild = 1;
-                        }else{
-                            prevChild = 2;
+                        }else if(prevChild == 1){ // came back from left (must return)
+                            temp = thisNode;
+                            if(thisNode.rightChild == null)
+                                prevChild = 2;
+                            else{
+                                stack.add(thisNode);
+                                thisNode = thisNode.rightChild;
+                                prevChild = 0;
+                            }
+                            return temp.key;
+                        }else{ // came back from right
+                            temp = thisNode;
+                            if(stack.size() <= 0)
+                                throw new NoSuchElementException(); 
+                            thisNode = stack.remove(stack.size() - 1);
+                            int compare = thisNode.key.compareTo(temp.key);
+                            if(compare > 0){
+                                prevChild = 1;
+                            }else{
+                                prevChild = 2;
+                            }
                         }
                     }
                 }
             }
-        }
-        public void remove() throws UnsupportedOperationException{
-            throw new UnsupportedOperationException();
-        }
+            public void remove() throws UnsupportedOperationException{
+                throw new UnsupportedOperationException();
+            }
     }
     private class TreapNode{
         private TreapNode leftChild;
@@ -396,7 +426,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             this.value = value;
             this.priority = priority;
         }
-        
+
         public String toString(){
             return "[" + priority + "] <" + key + ", " + 
                 value + ">\n";

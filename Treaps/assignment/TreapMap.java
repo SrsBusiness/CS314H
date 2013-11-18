@@ -171,9 +171,9 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             parent = new TreapNode(current.key, current.value, 1);
         int compare = parent.key.compareTo(current.key);
         while(current.leftChild != null || current.rightChild != null) {
-            // System.out.println("Parent : " + parent.toString());
-            // System.out.println("Current : " + current.toString());
-            // System.out.println("rotating");
+            System.out.println("Parent : " + parent.toString());
+            System.out.println("Current : " + current.toString());
+            System.out.println("rotating");
             compare = parent.key.compareTo(current.key);
             TreapNode lesserChild;
             if(current.leftChild == null)

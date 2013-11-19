@@ -14,10 +14,18 @@ public class TreapTest{
         for(int i = 10; i < 20; i++)
             treap.remove(i);
         System.out.println("removed 10-19");
-        sizeTest(treap, 40);
+        sizeTest(treap, 90);
         lookupTest(treap, 0, 10);
         lookupTest(treap, 20, 50);
         orderTest(treap);
+        /*
+        TreapMap<Integer, Integer> t = randomTreap(0, 10);
+        TreapMap<Integer, Integer> t1 = randomTreap(10, 20);
+        System.out.printf("t %s\n", t.toString());
+        System.out.printf("t1 %s\n", t1.toString());
+        t.join(t1);
+        System.out.printf("Joined %s\n", t.toString());
+        */
     }
 
     public static TreapMap<Integer, Integer> randomTreap(int s, int f){
@@ -32,14 +40,15 @@ public class TreapTest{
 
     public static void sizeTest(TreapMap map, int expected){
         Iterator it = map.iterator();
+        int i = 0;
         while(it.hasNext()) {
             it.next();
-            expected--;
+            i++;
         }
-        if(expected == 0)
+        if(expected == i)
             System.out.println("Treap is expected size");
         else
-            System.out.println("Treap is not expected size");
+            System.out.println("Treap is not expected size " + i + "\n" + map);
     }
 
     public static void lookupTest(TreapMap map, int s, int f){

@@ -204,6 +204,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      */
     public void join(Treap<K, V> t){  
         TreapMap<K, V> other = (TreapMap<K, V>)t;
+        // cases where one treap is empty
         if(root == null){
             root = other.root;
             return;

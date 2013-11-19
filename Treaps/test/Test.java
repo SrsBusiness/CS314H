@@ -408,8 +408,47 @@ public class Test{
         	passed = false; 
         }
         System.out.println(passed ? "Test Case 14c passed" :
-                "Test Case 14c failed");
-        /* 
+                "Test Case 14c failed"); 
+                     
+        //*******************************************************************
+ 
+        t = randomTreap(0,20);
+        t2 = randomTreap(0,0);
+        System.out.println("Test Case 15: Empty join");
+        passed = true;
+        t.join(t2);
+        System.out.println("t1 join t2");
+        if(!sizeTest(t,20)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest(t)){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest(t,0,20)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        t2.join(t);
+        System.out.println("t2 join t1");
+        if(!sizeTest(t2,20)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest(t2)){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest(t2,0,20)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println(passed ? "Test Case 15 passed" :
+                "Test Case 15 failed");
+
+        //******************************************************************
+               /* 
         t = randomTreap(0, 10);
         System.out.println("Test Case 10: toString()");
         passed = true;

@@ -58,6 +58,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         modCount++;
     }
 
+    // helper method for insert
     private TreapNode insert(K key, V value, int priority, TreapNode parent, 
             TreapNode current) {
         int compare = current.key.compareTo(key);

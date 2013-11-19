@@ -225,6 +225,190 @@ public class Test{
                 "Test Case 9 failed");
          
         //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 10: Lookup opertaion");
+        passed = true;
+        it = t.iterator();
+        for(int i = 0; i < 50; i++){
+            if(t.lookup(i) != i) {
+                passed = false;
+                break;
+            }
+        }
+        System.out.println(passed ? "Test Case 10 passed" :
+                "Test Case 10 failed");
+        
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 11: Iterator order test");
+        passed = true;
+        passed = orderTest(t);
+        System.out.println(passed ? "Test Case 11 passed" :
+                "Test Case 11 failed");
+                
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 12a: Joining size test");
+        passed = true;
+        TreapMap<Integer, Integer> t2 = randomTreap(51,101);
+        t.join(t2);
+        passed = sizeTest(t,100);
+        System.out.println(passed ? "Test Case 12a passed" :
+                "Test Case 12a failed");
+        
+        //*******************************************************************
+        
+        System.out.println("Test Case 12b: Joining  order test");
+        passed = true;
+        passed = orderTest(t);
+        System.out.println(passed ? "Test Case 12b passed" :
+                "Test Case 12b failed");
+         
+        //*******************************************************************
+        
+        System.out.println("Test Case 12c: Joining lookup test");
+        passed = true;
+        it = t.iterator();
+        for(int i = 0; i < 101; i++){
+            if(i==50)
+                i++;
+            if(t.lookup(i) != i) {
+                passed = false;
+                break;
+            }
+        }
+        System.out.println(passed ? "Test Case 12c passed" :
+                "Test Case 12c failed");
+           
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 13a: Remove opertaion size");
+        passed = true;
+        for(int i = 10; i < 20; i++){
+            t.remove(i);
+        }
+        passed = sizeTest(t,40);
+        System.out.println(passed ? "Test Case 13a passed" :
+                "Test Case 13a failed");
+                
+        //*******************************************************************
+        
+        System.out.println("Test Case 13b: Remove opertaion order");
+        passed = true;
+        passed = orderTest(t);
+        System.out.println(passed ? "Test Case 13b passed" :
+                "Test Case 13b failed");
+            
+        //*******************************************************************
+        
+        System.out.println("Test Case 13c: Remove opertaion lookup");
+        passed = true;
+        passed = lookupTest(t,0,10) && lookupTest(t,20,50) && !lookupTest(t,10,20);
+        System.out.println(passed ? "Test Case 13c passed" :
+                "Test Case 13c failed");
+            
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 14: Split test");
+        passed = true;
+        t.remove(25);
+        Treap[] maps = t.split(25);
+        System.out.println("Left treap :");
+        if(!sizeTest((TreapMap)maps[0],25)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest((TreapMap)maps[0])){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest((TreapMap)maps[0],0,25)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println("Right treap :");
+        if(!sizeTest((TreapMap)maps[1],24)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest((TreapMap)maps[1])){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest((TreapMap)maps[1],26,50)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println(passed ? "Test Case 14 passed" :
+                "Test Case 14 failed");
+            
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 14b: Split test key present");
+        passed = true;
+        maps = t.split(25);
+        System.out.println("Left treap :");
+        if(!sizeTest((TreapMap)maps[0],25)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest((TreapMap)maps[0])){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest((TreapMap)maps[0],0,25)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println("Right treap :");
+        if(!sizeTest((TreapMap)maps[1],25)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest((TreapMap)maps[1])){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest((TreapMap)maps[1],25,50)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println(passed ? "Test Case 14b passed" :
+                "Test Case 14b failed");
+                
+                    
+        //*******************************************************************
+        
+        t = randomTreap(0,50);
+        System.out.println("Test Case 14c: Split test above");
+        passed = true;
+        maps = t.split(53);
+        System.out.println("Left treap :");
+        if(!sizeTest((TreapMap)maps[0],50)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        if(!orderTest((TreapMap)maps[0])){
+        	System.out.println("wrong order");
+        	passed = false;
+        }
+        if(!lookupTest((TreapMap)maps[0],0,50)){
+        	System.out.println("wrong values");
+        	passed = false;
+        }
+        System.out.println("Right treap :");
+        if(!sizeTest((TreapMap)maps[1],0)){
+        	System.out.println("wrong size");
+        	passed = false; 
+        }
+        System.out.println(passed ? "Test Case 14c passed" :
+                "Test Case 14c failed");
         /* 
         t = randomTreap(0, 10);
         System.out.println("Test Case 10: toString()");
@@ -258,50 +442,32 @@ public class Test{
         return result;
     }
 
-    public static void sizeTest(TreapMap map, int expected){
+    public static boolean sizeTest(TreapMap map, int expected){
         Iterator it = map.iterator();
         while(it.hasNext()) {
             it.next();
             expected--;
         }
-        if(expected == 0)
-            System.out.println("Treap is expected size");
-        else
-            System.out.println("Treap is not expected size");
+        return expected == 0;
     }
 
-    public static void lookupTest(TreapMap map, int s, int f){
+    public static boolean lookupTest(TreapMap map, int s, int f){
         boolean right = true;
         for(int i = s; i < f; i++)
             right = right && (map.lookup(i) == i);
-        if(right)
-            System.out.println("lookup and key-value pairs are correct");
-        else
-            System.out.println("lookup and key-value pairs are incorrect");
+        return right;
     }
 
-    public static void orderTest(TreapMap map){
+    public static boolean orderTest(TreapMap map){
         Iterator<Integer> it = map.iterator();
         int prev = it.next();
         boolean ordered = true;
         while(it.hasNext() && ordered){
             int next = it.next();
             ordered = ordered && (next > prev);
+            prev = next;
         }
-        if(ordered)
-            System.out.println("Iterator goes in order of keys");
-        else
-            System.out.println("Iterator doesn't go in order of keys");
-    }
-
-    public static void joinTest(TreapMap map1, TreapMap map2){
-        System.out.println("Joining Treaps");
-        map1.join(map2);
-        System.out.println("Treaps joined");
-        System.out.print("Joined treap: ");
-        sizeTest(map1,100);
-        System.out.print("Joined treap: ");
-        orderTest(map1);
+        return ordered;
     }
 
 }

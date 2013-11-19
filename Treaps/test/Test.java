@@ -273,7 +273,7 @@ public class Test{
         passed = true;
         it = t.iterator();
         for(int i = 0; i < 101; i++){
-            if(i=50)
+            if(i==50)
                 i++;
             if(t.lookup(i) != i) {
                 passed = false;
@@ -320,27 +320,27 @@ public class Test{
         Treap[] maps = t.split(25);
         System.out.println("Left treap :");
         if(!sizeTest((TreapMap)maps[0],25)){
-        	System.out.println("wrong size")
+        	System.out.println("wrong size");
         	passed = false; 
         }
         if(!orderTest((TreapMap)maps[0])){
         	System.out.println("wrong order");
         	passed = false;
         }
-        if(!lookupTest((TreapMap)maps[0],0,25){
+        if(!lookupTest((TreapMap)maps[0],0,25)){
         	System.out.println("wrong values");
         	passed = false;
         }
         System.out.println("Right treap :");
-        if(!sizeTest((TreapMap)maps[0],24)){
-        	System.out.println("wrong size")
+        if(!sizeTest((TreapMap)maps[1],24)){
+        	System.out.println("wrong size");
         	passed = false; 
         }
-        if(!orderTest((TreapMap)maps[0])){
+        if(!orderTest((TreapMap)maps[1])){
         	System.out.println("wrong order");
         	passed = false;
         }
-        if(!lookupTest((TreapMap)maps[0],26,50){
+        if(!lookupTest((TreapMap)maps[1],26,50)){
         	System.out.println("wrong values");
         	passed = false;
         }
@@ -352,30 +352,30 @@ public class Test{
         t = randomTreap(0,50);
         System.out.println("Test Case 14b: Split test key present");
         passed = true;
-        Treap[] maps = t.split(25);
+        maps = t.split(25);
         System.out.println("Left treap :");
         if(!sizeTest((TreapMap)maps[0],25)){
-        	System.out.println("wrong size")
+        	System.out.println("wrong size");
         	passed = false; 
         }
         if(!orderTest((TreapMap)maps[0])){
         	System.out.println("wrong order");
         	passed = false;
         }
-        if(!lookupTest((TreapMap)maps[0],0,25){
+        if(!lookupTest((TreapMap)maps[0],0,25)){
         	System.out.println("wrong values");
         	passed = false;
         }
         System.out.println("Right treap :");
         if(!sizeTest((TreapMap)maps[1],25)){
-        	System.out.println("wrong size")
+        	System.out.println("wrong size");
         	passed = false; 
         }
         if(!orderTest((TreapMap)maps[1])){
         	System.out.println("wrong order");
         	passed = false;
         }
-        if(!lookupTest((TreapMap)maps[1],25,50){
+        if(!lookupTest((TreapMap)maps[1],25,50)){
         	System.out.println("wrong values");
         	passed = false;
         }
@@ -388,23 +388,23 @@ public class Test{
         t = randomTreap(0,50);
         System.out.println("Test Case 14c: Split test above");
         passed = true;
-        Treap[] maps = t.split(53);
+        maps = t.split(53);
         System.out.println("Left treap :");
         if(!sizeTest((TreapMap)maps[0],50)){
-        	System.out.println("wrong size")
+        	System.out.println("wrong size");
         	passed = false; 
         }
         if(!orderTest((TreapMap)maps[0])){
         	System.out.println("wrong order");
         	passed = false;
         }
-        if(!lookupTest((TreapMap)maps[0],0,50){
+        if(!lookupTest((TreapMap)maps[0],0,50)){
         	System.out.println("wrong values");
         	passed = false;
         }
         System.out.println("Right treap :");
         if(!sizeTest((TreapMap)maps[1],0)){
-        	System.out.println("wrong size")
+        	System.out.println("wrong size");
         	passed = false; 
         }
         System.out.println(passed ? "Test Case 14c passed" :
@@ -442,7 +442,7 @@ public class Test{
         return result;
     }
 
-    public static void sizeTest(TreapMap map, int expected){
+    public static boolean sizeTest(TreapMap map, int expected){
         Iterator it = map.iterator();
         while(it.hasNext()) {
             it.next();
@@ -451,7 +451,7 @@ public class Test{
         return expected == 0;
     }
 
-    public static void lookupTest(TreapMap map, int s, int f){
+    public static boolean lookupTest(TreapMap map, int s, int f){
         boolean right = true;
         for(int i = s; i < f; i++)
             right = right && (map.lookup(i) == i);

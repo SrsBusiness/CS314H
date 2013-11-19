@@ -342,8 +342,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                     }
                 }else{ // second time at a node
                     if(thisNode.rightChild != null){
-                        status = true;
-                        stack.add(thisNode.rightChild);
+                        status = true; stack.add(thisNode.rightChild);
                     }
                     return thisNode.key;
                 }

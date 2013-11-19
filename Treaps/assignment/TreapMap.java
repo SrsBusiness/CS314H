@@ -25,6 +25,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         this.root = root;
     }
     public V lookup(K key){
+        if(key == null)
+            return null;
         TreapNode current = root;
         while(current != null){
             int compare = current.key.compareTo(key);
@@ -47,6 +49,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      * @param value	 the value to associate with the key
      **/
     public void insert(K key, V value){
+        if(key == null)
+            return;
         if(root == null){
             root = new TreapNode(key, value, r.nextInt(1000000000));
         }
@@ -119,7 +123,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      * @return         the associated with the removed key, or null 
      */
     public V remove(K key){
-        if(root == null)
+        if(root == null || key == null)
             return null;
         TreapNode current = root;
         TreapNode parent = null;
@@ -136,7 +140,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         modCount++;
         return remove(current, parent);
     }
-
+    
+    // Iterative Helper method for remove
     private V remove(TreapNode current, TreapNode parent) {
         if(parent == null)
             parent = new TreapNode(current.key, current.value, 1);
@@ -176,10 +181,16 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      * @return       the left treap in index 0, the right in index 1
      */
     public Treap<K, V> [] split(K key){
+        if(key == null)
+            return null;
         Treap[] out = new TreapMap[2];
         insert(key, lookup(key), -1, null, root);
         out[0] = new TreapMap(root.leftChild);
         out[1] = new TreapMap(root.rightChild);
+        V value;
+        // if the key was originally present, add it back in
+        if((value = lookup(key)) != null)
+            out[1].insert(key, value);
         return out;
     }
 
@@ -193,6 +204,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
      */
     public void join(Treap<K, V> t){  
         TreapMap<K, V> other = (TreapMap<K, V>)t;
+        // establish which tree is which
         TreapMap left, right;
         if(root.key.compareTo(other.root.key) > 0){
             left = other;
@@ -201,6 +213,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             left = this;
             right = other;
         }
+        // find the greatest of the left tree, move it to the root
         TreapNode temp = left.root;
         TreapNode parent = null;
         while(temp.rightChild != null){
@@ -214,7 +227,9 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         newRoot.leftChild = left.root;
         newRoot.rightChild = right.root;
         root = newRoot;
+        // remove the root with priority -1
         remove(key);
+        // insert it back
         insert(key, value);
         modCount = 0;
     }
@@ -259,7 +274,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
     public String toString(){
         return toString(root, 0); 
     }
-
+    
+    // recursive helper method for toString()
     private String toString(TreapNode node, int indents){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < indents * 4; i++)
@@ -267,8 +283,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         if(node == null)
             return sb.toString() + "null\n";
         return sb.toString() + node.toString() + 
-            toString(node.rightChild, indents + 1 ) +
-            toString(node.leftChild, indents + 1);
+            toString(node.leftChild, indents + 1 ) +
+            toString(node.rightChild, indents + 1);
     }
 
     /**
@@ -290,7 +306,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
         throw new UnsupportedOperationException();
     }
 
-    //pre: child key != parent key
+    // pre: child key != parent key
     private boolean isLeftChild(TreapNode parent, TreapNode child){
         return parent.key.compareTo(child.key) > 0;
     }
@@ -316,6 +332,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                 throw new ConcurrentModificationException();
             while(stack.size() > 0){
                 thisNode = stack.remove(stack.size() - 1);
+                // first time at a node
                 if(status){
                     status = false;
                     stack.add(thisNode);
@@ -323,7 +340,7 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
                         stack.add(thisNode.leftChild);
                         status = true;
                     }
-                }else{
+                }else{ // second time at a node
                     if(thisNode.rightChild != null){
                         status = true;
                         stack.add(thisNode.rightChild);

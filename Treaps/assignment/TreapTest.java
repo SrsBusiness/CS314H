@@ -4,7 +4,19 @@ import java.util.Random;
 
 public class TreapTest{
     public static void main(String[] args){ 
-        TreapMap<Integer, Integer> treap = randomTreap(0, 50);
+        TreapMap<Integer, Integer> treap = randomTreap(0, 10);
+        /*
+        System.out.println(treap);
+        treap.remove(Integer.parseInt(System.console().readLine("Root: ")));
+        System.out.println(treap);
+        */
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                treap.insert(i, 10 + j);
+            }
+        }
+        System.out.println(treap);
+        /*
         TreapMap<Integer, Integer> treap2 = randomTreap(51, 101);
         sizeTest(treap, 50);
         sizeTest(treap2, 50);

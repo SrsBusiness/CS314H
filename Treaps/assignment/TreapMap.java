@@ -266,8 +266,8 @@ public class TreapMap<K extends Comparable<K>, V> implements Treap<K, V> {
             sb.append(' ');
         if(node == null)
             return sb.toString() + "null\n";
-        return toString(node.rightChild, indents + 1 ) +
-            sb.toString() + node.toString() +
+        return sb.toString() + node.toString() + 
+            toString(node.rightChild, indents + 1 ) +
             toString(node.leftChild, indents + 1);
     }
 
